@@ -1,0 +1,27 @@
+---
+export interface Props {
+  href: string;
+  title: string;
+  year?: number;
+  summary?: string;
+  stack?: string[];
+}
+const { href, title, year, summary, stack = [] } = Astro.props as Props;
+---
+<a
+  href={href}
+  class="block max-w-sm w-full mx-auto rounded-xl border p-5 hover:shadow transition text-left
+         bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+>
+  <h3 class="font-semibold">{title}{year ? ` (${year})` : ""}</h3>
+  {summary && (
+    <p class="mt-2 text-base text-slate-600 dark:text-slate-300">
+      {summary}
+    </p>
+  )}
+  {stack.length > 0 && (
+    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
+      {stack.join(" · ")}
+    </p>
+  )}
+</a>

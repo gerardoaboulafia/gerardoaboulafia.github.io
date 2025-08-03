@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+/** Genera una página por cada proyecto de la colección */
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((p) => ({
+    params: { slug: p.slug },   // /projects/<slug>/
+    props: { entry: p },        // pasamos la entrada al componente
+  }));
+}
+
+const { entry } = Astro.props;
+
+/** En prod, entry existe. En dev, si tipeás un slug inválido, puede ser undefined */
+const data = entry?.data ?? { title: "Project", year: "", summary: "", stack: [], highlights: [] };
+const Content = entry ? (await entry.render()).Content : null;
+
+/** Relacionados simples: otros proyectos (toma 3) */
+const all = await getCollection("projects");
+const related = entry ? all.filter((p) => p.slug !== entry.slug).slice(0, 3) : [];
+---
+<BaseLayout title={`${data.title} — Project`}>
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    {entry ? (
+      <!-- Tipografía lecturable, invertida en dark -->
+      <article class="prose prose-slate md:prose-lg dark:prose-invert max-w-none">
+        <h1 class="!mb-3 !font-bold font-serif !text-4xl md:!text-5xl !leading-tight">
+          {data.title} <span class="text-slate-400 dark:text-slate-300 !font-normal !text-2xl md:!text-3xl">({data.year})</span>
+        </h1>
+
+        {data.summary && <p class="!mt-0 text-slate-600 dark:text-slate-300">{data.summary}</p>}
+
+        {/* Hashtags (stack) */}
+        {data.stack?.length ? (
+          <div class="mt-4 flex flex-wrap gap-2 not-prose">
+            {data.stack.map((t) => (
+              <span class="text-sm px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200
+                            dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700">#{t}</span>
+            ))}
+          </div>
+        ) : null}
+
+        {/* Cuerpo libre del .md */}
+        {Content && <div class="mt-6"><Content /></div>}
+
+        {/* Links */}
+        <div class="mt-8 flex gap-6 not-prose">
+          {data.repo && <a class="underline" href={data.repo} target="_blank">Repository</a>}
+          {data.report && <a class="underline" href={data.report} target="_blank">Report</a>}
+        </div>
+      </article>
+    ) : (
+      <div class="py-16">
+        <h1 class="text-2xl font-bold mb-2">Project not found</h1>
+        <p class="text-slate-600">Return to the <a class="underline" href="/projects/">projects list</a>.</p>
+      </div>
+    )}
+
+    {/* Relacionados */}
+    {entry && related.length > 0 && (
+      <section class="mt-16 border-t border-slate-200 dark:border-slate-700 pt-8">
+        <h2 class="text-xl italic mb-6">You may also like…</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {related.map((r) => (
+            <ProjectCard
+              href={`/projects/${r.slug}/`}
+              title={r.data.title}
+              year={r.data.year}
+              summary={r.data.summary}
+              stack={r.data.stack}/>
+          ))}
+        </div>
+      </section>
+    )}
+  </section>
+</BaseLayout>

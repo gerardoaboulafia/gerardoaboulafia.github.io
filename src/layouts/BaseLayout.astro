@@ -1,0 +1,51 @@
+---
+import "../styles/global.css";
+const { title = "Gerardo — Portfolio", description = "" } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <!-- Evitar FOUC: aplica el tema antes de pintar -->
+    <script is:inline>
+      (function () {
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const stored = localStorage.getItem("theme");
+        const isDark = stored ? stored === "dark" : prefersDark;
+        document.documentElement.classList.toggle("dark", isDark);
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen bg-stone-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+    <header class="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
+      <a href="/" class="font-semibold">Gerardo Aboulafia</a>
+      <nav class="flex items-center gap-4 text-sm">
+        <a href="/projects/" class="hover:underline">Projects</a>
+        <a href="/resume/" class="hover:underline">Resume</a>
+        <button id="theme-toggle"
+          class="rounded-md border border-slate-200 dark:border-slate-700 px-3 py-1 hover:bg-slate-100 dark:hover:bg-slate-800"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span class="inline dark:hidden">🌙</span>
+          <span class="hidden dark:inline">☀️</span>
+        </button>
+      </nav>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 pb-16">
+      <slot />
+    </main>
+
+    <!-- Manejar el click del toggle -->
+    <script is:inline>
+      const btn = document.getElementById("theme-toggle");
+      btn?.addEventListener("click", () => {
+        const html = document.documentElement;
+        const nowDark = !html.classList.contains("dark");
+        html.classList.toggle("dark", nowDark);
+        localStorage.setItem("theme", nowDark ? "dark" : "light");
+      });
+    </script>
+  </body>
+</html>

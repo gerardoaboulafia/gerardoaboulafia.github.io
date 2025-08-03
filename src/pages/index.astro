@@ -1,16 +1,49 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
 
+const all = await getCollection("projects");
+const featured = all
+  .filter((p) => p.data.featured)
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 6);
 ---
+<BaseLayout title="Gerardo Aboulafia — Portfolio">
+  <!-- HERO centrado con foto -->
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+    <img
+      src="/me.png"
+      alt="Portrait of Gerardo Aboulafia"
+      class="mx-auto h-40 w-40 rounded-full object-cover ring-1 ring-slate-200 shadow-sm"
+      width="160"
+      height="160"
+      loading="eager"
+    />
+    <h1 class="mt-6 text-4xl md:text-5xl font-serif font-bold">👋 Hi, I'm Gerardo</h1>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+    <!-- Texto (opción B, corporativo) -->
+    <p class="mt-6 md:mt-8 text-slate-700 dark:text-slate-300 max-w-2xl mx-auto">
+      Cloud Architect at MetLife and a Data Science student, with hands-on delivery on Google Cloud Platform (SQL/Python) and YAML-driven pipelines. Currently focused on automation for data governance and quality in Collibra to accelerate decision-making and measurable outcomes.
+    </p>
+  </section>
+
+  <!-- PROYECTOS (centrado) -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 text-center">
+    <h2 class="text-xl font-semibold mb-6">Projects</h2>
+    <div class="grid justify-center sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {featured.map((p) => (
+        <ProjectCard
+          href={`/projects/${p.slug}/`}
+          title={p.data.title}
+          year={p.data.year}
+          summary={p.data.summary}
+          stack={p.data.stack}
+        />
+      ))}
+    </div>
+    <div class="mt-6">
+      <a class="underline" href="/projects/">View all projects</a>
+    </div>
+  </section>
+</BaseLayout>
