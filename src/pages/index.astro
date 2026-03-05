@@ -8,6 +8,10 @@ const featured = all
   .filter((p) => p.data.featured)
   .sort((a, b) => b.data.year - a.data.year)
   .slice(0, 6);
+
+const posts = (await getCollection("blog"))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
 ---
 <BaseLayout title="Gerardo Aboulafia — Portfolio">
   <!-- HERO centrado con foto -->
@@ -44,6 +48,25 @@ const featured = all
     </div>
     <div class="mt-6">
       <a class="underline" href="/projects/">View all projects</a>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 text-center">
+    <h2 class="text-xl font-semibold mb-6">Blog</h2>
+    <ul class="space-y-6 text-left max-w-3xl mx-auto">
+      {posts.map((p) => (
+        <li>
+          <a href={`/blog/${p.slug}/`} class="group block">
+            <h3 class="text-base font-semibold group-hover:underline">{p.data.title}</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{p.data.date}</p>
+            <p class="text-slate-600 dark:text-slate-300 mt-1 text-sm">{p.data.summary}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="mt-6">
+      <a class="underline" href="/blog/">View all posts</a>
     </div>
   </section>
 </BaseLayout>
