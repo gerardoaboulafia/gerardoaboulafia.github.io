@@ -9,7 +9,7 @@ When Victor Wembanyama is on the court, opponents score 9.3 fewer points per 100
 
 But the box score only tells you *that* he's dominant. It doesn't tell you *how*. The most interesting thing about Wembanyama's defense isn't the shots he blocks — it's the shots that never happen. Drives abandoned. Lobs rethought. Floaters pulled back. The entire geometry of an opposing offense bends around him.
 
-So what does that distortion actually look like? We built a possession-level dataset of the 2024-25 Spurs season to find out.
+So what does that distortion actually look like? We built a possession-level dataset of the 2025-26 Spurs season to find out.
 
 ---
 
@@ -104,7 +104,7 @@ For the Defensive Player of the Year conversation, the case writes itself: a 9.3
 <summary>Data sources, formulas, and technical details</summary>
 
 ### Data Sources
-- **Play-by-play**: NBA Stats API (`PlayByPlayV3`), 47 Spurs games, 2024-25 season
+- **Play-by-play**: NBA Stats API (`PlayByPlayV3`), 47 Spurs games, 2025-26 season
 - **Shot locations**: `ShotChartDetail` endpoint, all opponent shots vs. Spurs
 - **Season baselines**: Full-season opponent shot data for each team (via `DomSamangy/NBA_Shots_04_25`)
 
