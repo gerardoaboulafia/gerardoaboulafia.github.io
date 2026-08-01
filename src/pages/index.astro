@@ -6,7 +6,11 @@ import { getCollection } from "astro:content";
 const all = await getCollection("projects");
 const featured = all
   .filter((p) => p.data.featured)
-  .sort((a, b) => b.data.year - a.data.year)
+  .sort((a, b) =>
+    b.data.year - a.data.year ||
+    a.data.order - b.data.order ||
+    a.data.title.localeCompare(b.data.title)
+  )
   .slice(0, 6);
 
 const posts = (await getCollection("blog"))

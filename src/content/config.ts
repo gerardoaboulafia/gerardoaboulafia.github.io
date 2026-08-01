@@ -12,6 +12,7 @@ const projects = defineCollection({
     report: z.string().url().optional(),   // (tu “informe”)
     cover: z.string().optional(),          // imagen opcional en /public
     featured: z.boolean().default(false),  // para destacarlo en Home
+    order: z.number().default(999),        // lower = shown first (tiebreaker within the same year)
   }),
 });
 

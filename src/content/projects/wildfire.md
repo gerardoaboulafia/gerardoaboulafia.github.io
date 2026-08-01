@@ -5,6 +5,7 @@ stack: ["Python", "scikit-learn", "XGBoost", "LightGBM", "SHAP", "Google Earth E
 summary: "End-to-end geospatial ML pipeline that maps wildfire susceptibility across Córdoba Province, Argentina — from satellite data ingestion to an interactive 3D dashboard."
 repo: "https://github.com/gerardoaboulafia/wildfire_detection"
 featured: true
+order: 1
 ---
 This project builds a full geospatial machine-learning pipeline to map wildfire susceptibility across Córdoba Province, Argentina. Satellite fire detections (MODIS FIRMS for training, VIIRS for validation) define a binary fire/no-fire target, which is modeled against roughly 15 environmental features: topography from SRTM, vegetation indices and land surface temperature from MODIS, climate from ERA5-Land, soil properties from SoilGrids, roads and rivers from OpenStreetMap, population from WorldPop, and land cover from Copernicus. Feature layers are assembled through Google Earth Engine and other APIs, then harmonized, resampled, and filtered by VIF and correlation. Negative samples are drawn more than 5 km from any detection and stratified by land cover to avoid spatial bias.
 

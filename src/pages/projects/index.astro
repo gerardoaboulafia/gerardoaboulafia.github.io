@@ -3,7 +3,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
 const projects = await getCollection("projects");
-projects.sort((a, b) => b.data.year - a.data.year);
+projects.sort(
+  (a, b) =>
+    b.data.year - a.data.year ||
+    a.data.order - b.data.order ||
+    a.data.title.localeCompare(b.data.title)
+);
 ---
 <BaseLayout title="Projects — Gerardo">
   <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
