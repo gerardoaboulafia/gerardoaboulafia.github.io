@@ -1,43 +1,42 @@
-# Astro Starter Kit: Minimal
+# gerardoaboulafia.github.io
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Personal portfolio and blog of **Gerardo Aboulafia** — Data Architect at MetLife and Data Science student. Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com), deployed to GitHub Pages.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+**Live:** https://gerardoaboulafia.github.io
 
-## 🚀 Project Structure
+## Tech stack
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Astro 5** — static site generator
+- **Tailwind CSS 4** (via `@tailwindcss/vite`) with the typography plugin
+- **Content Collections** (`src/content/`) for projects and blog posts, validated with Zod
+- **GitHub Pages** deploy via GitHub Actions (`.github/workflows/deploy.yml`)
+
+## Project structure
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├── components/      # Reusable UI (ProjectCard)
+├── content/
+│   ├── projects/    # Project entries (Markdown + frontmatter)
+│   ├── blog/        # Blog posts (Markdown + frontmatter)
+│   └── config.ts    # Collection schemas
+├── layouts/         # BaseLayout (head/meta, nav, theme toggle)
+├── pages/           # Routes (home, projects, blog, resume)
+└── styles/          # Global CSS
+public/              # Static assets (images, resume.pdf, favicon)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Adding content
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Create a Markdown file in `src/content/projects/` or `src/content/blog/`. Frontmatter fields are defined in [`src/content/config.ts`](src/content/config.ts) — a project needs `title`, `year`, and `summary`, plus optional `stack`, `repo`, `report`, and `featured`. Set `featured: true` to surface a project on the home page.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Commands
 
-## 🧞 Commands
+Run from the project root:
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Command           | Action                                   |
+| :---------------- | :--------------------------------------- |
+| `npm install`     | Install dependencies                     |
+| `npm run dev`     | Start the dev server at `localhost:4321` |
+| `npm run build`   | Build the production site to `./dist/`   |
+| `npm run preview` | Preview the production build locally     |

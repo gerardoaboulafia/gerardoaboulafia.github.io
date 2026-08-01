@@ -14,7 +14,7 @@ const { entry } = Astro.props;
 const data = entry?.data ?? { title: "Post", date: "", summary: "", tags: [] };
 const Content = entry ? (await entry.render()).Content : null;
 ---
-<BaseLayout title={`${data.title} — Blog`} description={data.summary}>
+<BaseLayout title={`${data.title} — Blog`} description={data.summary} type="article">
   <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     {entry ? (
       <article class="prose prose-slate md:prose-lg dark:prose-invert max-w-none">
