@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 764 666" width="764" height="666" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+<defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#d6dbe1"/><line x1="0" y1="0" x2="0" y2="8" stroke="#b4bcc6" stroke-width="3"/></pattern><pattern id="art" width="13" height="13" patternUnits="userSpaceOnUse"><rect width="13" height="13" fill="#5f8f4e"/><rect x="0" y="0" width="6" height="6" fill="#4d7a3f"/><rect x="7" y="7" width="6" height="6" fill="#c8754a"/><rect x="7" y="0" width="6" height="6" fill="#6f9d5c"/></pattern></defs>
+<rect x="0" y="0" width="764" height="666" rx="14" fill="#f8fafc"/>
+<text x="28" y="34" font-size="17" font-weight="700" fill="#0f172a">Nine training inputs per tile</text>
+<text x="28" y="55" font-size="13" fill="#475569">Each input is a 2×2 block of 512-px cells. The target is always the full pixel-art tile.</text>
+<rect x="84.0" y="84" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="136.0" y="84" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="84.0" y="136" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="136.0" y="136" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="137.5" y="85.5" width="49.0" height="101" fill="none" stroke="#e11d48" stroke-width="3"/>
+<text x="136.0" y="212" font-size="13" text-anchor="middle" fill="#334155">Left half finished</text>
+<rect x="320.0" y="84" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="372.0" y="84" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="320.0" y="136" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="372.0" y="136" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="321.5" y="85.5" width="49.0" height="101" fill="none" stroke="#e11d48" stroke-width="3"/>
+<text x="372.0" y="212" font-size="13" text-anchor="middle" fill="#334155">Right half finished</text>
+<rect x="556.0" y="84" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="608.0" y="84" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="556.0" y="136" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="608.0" y="136" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="557.5" y="137.5" width="101.0" height="49" fill="none" stroke="#e11d48" stroke-width="3"/>
+<text x="608.0" y="212" font-size="13" text-anchor="middle" fill="#334155">Top half finished</text>
+<rect x="84.0" y="266" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="136.0" y="266" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="84.0" y="318" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="136.0" y="318" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="85.5" y="267.5" width="101.0" height="49" fill="none" stroke="#e11d48" stroke-width="3"/>
+<text x="136.0" y="394" font-size="13" text-anchor="middle" fill="#334155">Bottom half finished</text>
+<rect x="320.0" y="266" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="372.0" y="266" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="320.0" y="318" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="372.0" y="318" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="321.5" y="267.5" width="49.0" height="49" fill="none" stroke="#e11d48" stroke-width="3"/>
+<text x="372.0" y="394" font-size="13" text-anchor="middle" fill="#334155">Draw top-left only</text>
+<rect x="556.0" y="266" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="608.0" y="266" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="556.0" y="318" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="608.0" y="318" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="609.5" y="267.5" width="49.0" height="49" fill="none" stroke="#e11d48" stroke-width="3"/>
+<text x="608.0" y="394" font-size="13" text-anchor="middle" fill="#334155">Draw top-right only</text>
+<rect x="84.0" y="448" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="136.0" y="448" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="84.0" y="500" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="136.0" y="500" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="85.5" y="501.5" width="49.0" height="49" fill="none" stroke="#e11d48" stroke-width="3"/>
+<text x="136.0" y="576" font-size="13" text-anchor="middle" fill="#334155">Draw bottom-left only</text>
+<rect x="320.0" y="448" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="372.0" y="448" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="320.0" y="500" width="52" height="52" fill="url(#art)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="372.0" y="500" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="373.5" y="501.5" width="49.0" height="49" fill="none" stroke="#e11d48" stroke-width="3"/>
+<text x="372.0" y="576" font-size="13" text-anchor="middle" fill="#334155">Draw bottom-right only</text>
+<rect x="556.0" y="448" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="608.0" y="448" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="556.0" y="500" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="608.0" y="500" width="52" height="52" fill="url(#hatch)" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="557.5" y="449.5" width="101.0" height="101" fill="none" stroke="#e11d48" stroke-width="3"/>
+<text x="608.0" y="576" font-size="13" text-anchor="middle" fill="#334155">Nothing finished (seed)</text>
+<rect x="28" y="627" width="16" height="16" fill="url(#art)"/><text x="52" y="640" font-size="13" fill="#334155">finished pixel art (anchor)</text>
+<rect x="248" y="627" width="16" height="16" fill="url(#hatch)"/><text x="272" y="640" font-size="13" fill="#334155">aerial render to redraw</text>
+<rect x="458" y="627" width="16" height="16" fill="none" stroke="#e11d48" stroke-width="3"/><text x="482" y="640" font-size="13" fill="#334155">red outline = draw here</text>
+</svg>
