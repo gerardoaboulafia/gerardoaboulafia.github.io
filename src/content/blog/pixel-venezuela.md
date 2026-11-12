@@ -2,21 +2,22 @@
 title: "Pixel Venezuela: Redrawing Valencia One Tile at a Time"
 date: "October 2026"
 tags: ["Generative AI", "Fine-tuning", "Computer Vision", "Python", "Maps"]
-summary: "How I turned Google's 3D map of Valencia, Venezuela, into a seamless 415-megapixel pixel-art map: a headless 3D renderer, a fine-tuned image-editing model, a seam-aware scheduler, and a lot of manual review."
+summary: "How I turned Google's 3D map of Valencia, Venezuela, into a seamless 698-megapixel pixel-art map: a headless 3D renderer, a fine-tuned image-editing model, a seam-aware scheduler, and a lot of manual review."
 ---
 
 I left Venezuela eight years ago. I grew up in Prebo, in Valencia, and every now and then I try to remember the streets I used to walk and the route to my school in El Trigal. This project is my way of keeping them: a pixel-art map of Valencia, drawn cell by cell by an image model I fine-tuned. You can explore it at **[pixelvenezuela.com/valencia](https://pixelvenezuela.com/valencia/)**.
 
 The idea comes from Andy Coenen's [isometric.nyc](https://isometric.nyc), a pixel-art map of New York, and from [his write-up](https://cannoneyed.com/projects/isometric-nyc) of how he built it. This post is the long version of how mine works: the pipeline, what broke, what I measured, and what I would do differently.
 
-![The full pixel-art map of Valencia](/blog/pixel-venezuela/map-overview.jpg)
-*Figure 1: The whole map, about 5.4 × 6.6 km, from Guaparo and El Trigal in the north down to the historic center at the bottom edge. North is up.*
+<img src="/blog/pixel-venezuela/map-overview.jpg" alt="The full pixel-art map of Valencia" style="width: 100%; max-width: 440px; margin-left: auto; margin-right: auto;">
+
+*Figure 1: The whole map, about 5.4 × 11 km, from Naguanagua in the north down to the historic center at the bottom edge. North is up.*
 
 | | |
 |---|---|
-| Area | ~36 km², an 18 × 22 grid of zoom-17 map tiles |
-| Cells | 1,584 cells of 512 × 512 px, each about 150 m on a side |
-| Final image | 18,432 × 22,528 px (415 megapixels), ~0.29 m per pixel |
+| Area | ~60 km², an 18 × 37 grid of zoom-17 map tiles |
+| Cells | 2,664 cells of 512 × 512 px, each about 150 m on a side |
+| Final image | 18,432 × 37,888 px (698 megapixels), ~0.29 m per pixel |
 | Source | Google Photorealistic 3D Tiles, rendered top-down with CesiumJS |
 | Model | Qwen-Image-Edit with two LoRA fine-tunes (city and terrain) |
 | Inference | Serverless H100 GPUs on Modal, ~45 s per call |
@@ -26,7 +27,7 @@ The idea comes from Andy Coenen's [isometric.nyc](https://isometric.nyc), a pixe
 
 ## The Pipeline at a Glance
 
-1. **Render.** Capture 396 top-down images of the city from Google's 3D tiles.
+1. **Render.** Capture 666 top-down images of the city from Google's 3D tiles.
 2. **Make training pairs.** Convert 23 of them into pixel art with Gemini.
 3. **Fine-tune.** Teach an image-editing model to *continue* existing pixel art across a border, not just restyle a photo.
 4. **Generate.** Fill the map two-by-two cells at a time, always anchored on finished neighbors.
@@ -94,7 +95,7 @@ The red outline is drawn by one shared function in both training and inference, 
 
 ---
 
-## 4. Generating 1,584 Cells Without Seams
+## 4. Generating 2,664 Cells Without Seams
 
 Each generation call sends a 1024 × 1024 block (2 × 2 cells) to Modal and gets 1024 × 1024 back. Only the cells that weren't anchors are kept. Inference runs Hugging Face Diffusers' Qwen-Image-Edit pipeline with the LoRA in bfloat16, at 40 steps and a true CFG scale of 4.0, on one H100: about 45 seconds per warm call. Some blocks fill two to four cells at once, so the map averaged about 0.75 calls per cell.
 
@@ -152,7 +153,7 @@ For the final repair pass (211 cells), every v1 cell with a blind edge got **two
 
 ---
 
-## 7. Making 1,584 Cells Look Like One Map
+## 7. Making 2,664 Cells Look Like One Map
 
 Each cell comes out of the model with 70,000–140,000 unique colors and its own overall tone. Stitched raw, the map shows faint rectangles, worst on the hills, where there are no buildings to distract the eye.
 
@@ -171,9 +172,9 @@ All of this runs at export time, and the raw art is never modified. The palette 
 
 ## 8. Export and Hosting
 
-The viewer reads a Deep Zoom (DZI) pyramid: 16 levels of 512-px PNG tiles, about 2,150 files and 170 MB in total. The palette is applied to each level separately, because the downscale that builds each level blends in new, off-palette colors.
+The viewer reads a Deep Zoom (DZI) pyramid: 17 levels of 512-px PNG tiles, about 3,600 files and 270 MB in total. The palette is applied to each level separately, because the downscale that builds each level blends in new, off-palette colors.
 
-The full-resolution level is 18,432 × 22,528 px. Applying the palette to it in one go needed about 15 GB of RAM on my 8 GB Mac: swap grew 4 GB in 20 seconds before a disk watchdog stopped it. The export now processes one 512-px row of tiles at a time, with 256 rows of context above and below for the water-clump rule, and its output is byte-identical.
+The full-resolution level was 18,432 × 22,528 px at first. Applying the palette to it in one go needed about 15 GB of RAM on my 8 GB Mac: swap grew 4 GB in 20 seconds before a disk watchdog stopped it. The export now processes one 512-px row of tiles at a time, with 256 rows of context above and below for the water-clump rule, and its output is byte-identical. After the expansion to 37,888 px, even holding the stitched image (2.8 GB in memory) was too much, so the export also reads the cells one strip at a time and builds each zoom level from the one above it.
 
 The viewer is OpenSeadragon with image smoothing off, so pixels stay crisp, and zoom stops at 1:1, so the art is never enlarged. On phones, the zoom buttons and minimap are hidden so they don't cover the Google attribution. It is all static files on Cloudflare Pages, with the domain on Cloudflare Registrar.
 
@@ -188,13 +189,20 @@ The viewer is OpenSeadragon with image smoothing off, so pixels stay crisp, and 
 - **Before blaming the data, vary the capture.** Three "Google problems" were my camera.
 
 ![An invented lake](/blog/pixel-venezuela/invented-lake.jpg)
-*Figure 6: Not every error got caught. The photo shows a dry hillside here; the terrain model drew a lake and continued it into the next cell. If you find it on the map, you found my favorite bug.*
+*Figure 6: Not every error got caught the first time. The photo shows a dry hillside here; the terrain model drew a lake and continued it into the next cell. It was my favorite bug, and it stayed on the map until the second review pass.*
 
 ---
 
-## What's Next
+## Update, November 2026: North Into Naguanagua
 
-The map stops at El Trigal and Guaparo. Next is north into Naguanagua, a few rows of tiles at a time, starting with Mañongo and La Granja. And maybe, eventually, the lake gets fixed.
+The map now reaches about 4.5 km further north, into Naguanagua: 15 more rows of tiles and 1,080 new cells, including Mañongo and La Granja. A few things were new this time:
+
+- **Terrain needed instructions, not retraining.** On the hills, the terrain model drew dry brown slopes as forest and added houses, roads and straight lines that aren't there. A short note in the prompt fixed most of it: keep brown ground brown, keep real paths, and invent nothing.
+- **The palette had no color for dry grass.** Dry-grass ochre sits right between the palette's tan and its roof salmon, so small differences in tone turned whole hillsides into what looked like red soil. New terrain cells now have their orange and yellow saturation softened before quantizing, which lands them on tan.
+- **New cells adapt to the published ones.** Re-solving every tone gain would have shifted cells that were already live, so their gains stay fixed and only the new cells are solved against them.
+- **A second review pass.** I swept the whole map again and flagged 63 cells, old and new. Each got at least two new versions, from both models where a cell was half city and half hill, and I picked the best one in the map's final colors, because a version that looks fine raw can still turn into a blotch once the palette is applied. The invented lake is finally gone.
+
+Next is more of Naguanagua and the rest of the valley, a few rows of tiles at a time.
 
 ---
 
@@ -222,6 +230,7 @@ The map stops at El Trigal and Guaparo. Next is north into Naguanagua, a few row
 - LoRA selected per call; each LoRA keeps its own warm container pool (180 s scale-down)
 - ~45 s per warm call; ~0.75 calls per cell
 - Prompt steering by vegetation fraction: ≥ 0.35 mixed note, ≥ 0.65 dense-forest note
+- Terrain cells in the expansion: a terrain note instead of steering (keep brown ground brown, keep real paths, invent nothing)
 
 ### Planning
 - A cell is seam-safe unless both its N and S, or both its E and W, neighbors are finished
@@ -229,9 +238,10 @@ The map stops at El Trigal and Guaparo. Next is north into Naguanagua, a few row
 - Parallel batches: anchored blocks only, no two blocks writing 4-adjacent cells
 
 ### Color and export
-- Tone gains: sparse least squares over shared-edge brightness, log space, λ = 0.3
+- Tone gains: sparse least squares over shared-edge brightness, log space, λ = 0.3; published cells' gains held fixed when new cells are added
 - Palette: 48 colors (4 reserved for water), saturation above 110 compressed × 0.4
+- Dry grass on new terrain cells: saturation above 80 compressed × 0.3 for hues of about 14–65°, before quantizing
 - Water: `b > g + 15` and `b > r + 25`, connected clumps ≥ 150 px at full resolution
-- DZI: 16 levels, 512-px PNG tiles, palette applied per level, exported one tile row at a time
+- DZI: 17 levels, 512-px PNG tiles, palette applied per level, exported one tile row at a time, each level downscaled from the one above
 
 </details>
